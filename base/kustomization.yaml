@@ -3,7 +3,8 @@ kind: Kustomization
 namespace: character-battle
 resources:
   - namespace.yaml
+  - postgres-configmap.yaml
+  - app-secrets.example.yaml
   - postgres-init-configmap.yaml
   - postgres.yaml
   - redis.yaml
-

@@ -1,0 +1,73 @@
+expose:
+  type: nodePort
+  tls:
+    enabled: false
+    certSource: none
+  nodePort:
+    name: harbor
+    ports:
+      http:
+        port: 80
+        nodePort: 30082
+      https:
+        port: 443
+        nodePort: 30083
+
+externalURL: http://harbor.local:30082
+
+harborAdminPassword: change_me
+existingSecretAdminPassword: harbor-admin-secret
+existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+
+updateStrategy:
+  type: Recreate
+
+persistence:
+  enabled: true
+  resourcePolicy: keep
+  persistentVolumeClaim:
+    registry:
+      storageClass: local-path
+      accessMode: ReadWriteOnce
+      size: 20Gi
+    jobservice:
+      jobLog:
+        storageClass: local-path
+        accessMode: ReadWriteOnce
+        size: 2Gi
+    database:
+      storageClass: local-path
+      accessMode: ReadWriteOnce
+      size: 5Gi
+    redis:
+      storageClass: local-path
+      accessMode: ReadWriteOnce
+      size: 2Gi
+    trivy:
+      storageClass: local-path
+      accessMode: ReadWriteOnce
+      size: 5Gi
+
+portal:
+  replicas: 1
+
+core:
+  replicas: 1
+
+jobservice:
+  replicas: 1
+
+registry:
+  replicas: 1
+
+trivy:
+  enabled: true
+
+database:
+  type: internal
+
+redis:
+  type: internal
+
+notary:
+  enabled: false

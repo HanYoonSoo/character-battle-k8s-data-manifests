@@ -38,12 +38,12 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: app-config
+                  name: postgres-config
                   key: POSTGRES_DB
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef:
-                  name: app-config
+                  name: postgres-config
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -75,4 +75,3 @@ spec:
         resources:
           requests:
             storage: 3Gi
-

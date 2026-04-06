@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: character-battle
+data:
+  POSTGRES_DB: character_battle
+  POSTGRES_USER: app
