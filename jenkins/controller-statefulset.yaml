@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jenkins-controller
+  namespace: jenkins
+spec:
+  serviceName: jenkins-controller
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-controller
+  template:
+    metadata:
+      labels:
+        app: jenkins-controller
+    spec:
+      serviceAccountName: jenkins
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: install-plugins
+          image: jenkins/jenkins:lts-jdk17
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              jenkins-plugin-cli \
+                --plugin-file /var/jenkins_config/plugins.txt \
+                --plugin-download-directory /var/jenkins_home/plugins
+          volumeMounts:
+            - name: jenkins-home
+              mountPath: /var/jenkins_home
+            - name: plugins-config
+              mountPath: /var/jenkins_config/plugins.txt
+              subPath: plugins.txt
+      containers:
+        - name: jenkins
+          image: jenkins/jenkins:lts-jdk17
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: agent
+              containerPort: 50000
+          env:
+            - name: CASC_JENKINS_CONFIG
+              value: /var/jenkins_home/casc_configs/jcasc.yaml
+            - name: JAVA_OPTS
+              value: -Djenkins.install.runSetupWizard=false
+            - name: JENKINS_URL
+              value: http://jenkins.jenkins.svc.cluster.local:8080/
+          envFrom:
+            - secretRef:
+                name: jenkins-secrets
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          volumeMounts:
+            - name: jenkins-home
+              mountPath: /var/jenkins_home
+            - name: jcasc-config
+              mountPath: /var/jenkins_home/casc_configs/jcasc.yaml
+              subPath: jcasc.yaml
+      volumes:
+        - name: jcasc-config
+          configMap:
+            name: jenkins-jcasc
+        - name: plugins-config
+          configMap:
+            name: jenkins-plugins
+  volumeClaimTemplates:
+    - metadata:
+        name: jenkins-home
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
