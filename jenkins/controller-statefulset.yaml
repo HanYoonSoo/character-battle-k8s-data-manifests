@@ -82,7 +82,9 @@ spec:
     - metadata:
         name: jenkins-home
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
         resources:
           requests:
-            storage: 10Gi
+            storage: 3Gi
