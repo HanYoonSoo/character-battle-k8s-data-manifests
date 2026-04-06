@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   - serviceaccount.yaml
   - rbac.yaml
-  - jenkins-secret.example.yaml
+  - jenkins-secret.yaml
   - controller-service.yaml
   - controller-statefulset.yaml
 configMapGenerator:

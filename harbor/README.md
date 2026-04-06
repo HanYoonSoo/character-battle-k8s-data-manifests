@@ -5,7 +5,7 @@ This directory keeps the bootstrap YAML and Helm values for a local Harbor regis
 Contents:
 
 - `namespace.yaml`: Harbor namespace
-- `harbor-admin-secret.example.yaml`: initial admin password secret template
+- `harbor-admin-secret.yaml`: initial admin password secret
 - `kustomization.yaml`: bootstrap entrypoint for namespace and secret
 - `values.yaml`: Harbor Helm chart overrides tuned for this cluster
 
@@ -19,7 +19,7 @@ Assumptions:
 Bootstrap the namespace and secret first:
 
 ```bash
-# Edit harbor/harbor-admin-secret.example.yaml first.
+# Edit harbor/harbor-admin-secret.yaml first.
 kubectl apply -k harbor
 ```
 

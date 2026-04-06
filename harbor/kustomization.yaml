@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: harbor
 resources:
   - namespace.yaml
-  - harbor-admin-secret.example.yaml
+  - harbor-admin-secret.yaml

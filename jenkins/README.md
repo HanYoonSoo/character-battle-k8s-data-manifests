@@ -24,8 +24,8 @@ The `promote` job is intended for turning repeated failures into candidate rules
 Bootstrap the local Jenkins controller with:
 
 ```bash
-# Edit infra/jenkins/jenkins-secret.example.yaml first.
-kubectl apply -k infra/jenkins
+# Edit jenkins/jenkins-secret.yaml first.
+kubectl apply -k jenkins
 ```
 
 Access the UI locally with:
