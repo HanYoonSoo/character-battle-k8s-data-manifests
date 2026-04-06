@@ -69,8 +69,10 @@ spec:
     - metadata:
         name: postgres-data
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-path
         resources:
           requests:
-            storage: 5Gi
+            storage: 3Gi
 
