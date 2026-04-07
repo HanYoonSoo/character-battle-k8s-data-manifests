@@ -19,7 +19,7 @@ spec:
         fsGroup: 1000
       initContainers:
         - name: install-plugins
-          image: jenkins/jenkins:lts-jdk17
+          image: 192.168.56.30:30084/jenkins-custom:lts-jdk17-node20-py311
           imagePullPolicy: IfNotPresent
           command:
             - sh
@@ -36,7 +36,7 @@ spec:
               subPath: plugins.txt
       containers:
         - name: jenkins
-          image: jenkins/jenkins:lts-jdk17
+          image: 192.168.56.30:30084/jenkins-custom:lts-jdk17-node20-py311
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
